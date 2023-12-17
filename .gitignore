@@ -1,2 +1,3 @@
 .venv
 ffmpeg.exe
+__pycache__

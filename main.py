@@ -1,3 +1,7 @@
-from helpers.converter import convert
+from flask import Flask,render_template
 
-convert('c96c6d5b',['input.webm','input2.webm','input3.webm','input4.webm'],'.mp4')
+app = Flask(__name__)
+
+@app.route("/")
+def homepage():
+    return render_template("homepage.html")

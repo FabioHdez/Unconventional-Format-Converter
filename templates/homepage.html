@@ -82,9 +82,17 @@
             </tbody>
           </table>
           <div class="d-grid mx-auto">
-            <button type="button" class="btn btn-secondary">Import</button>
+            <input type="file" id="fileInput" multiple style="display: none;" />
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileInput').click();">Import</button>
           </div>
         </div>
+        <script>
+          document.getElementById('fileInput').addEventListener('change', function() {
+            // handle max size and file type
+              console.log(this.files);
+          });
+          </script>
+
 
         <div class="col-2">
         </div>

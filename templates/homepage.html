@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fa-solid fa-user fa-xl my-3"></i></a>
+              <a class="nav-link" href="#"><i class="fa-solid fa-circle-info fa-xl my-3"></i></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa-solid fa-gear fa-xl my-3"></i></a>
@@ -87,9 +87,22 @@
           </div>
         </div>
         <script>
+          // CHECKING FOR VALIDITY ON THE CLIENT SIDE. NEED TO ALSO CHECK ALL OF THIS ON THE SERVER  FOR SECURITY
           document.getElementById('fileInput').addEventListener('change', function() {
-            // handle max size and file type
-              console.log(this.files);
+              const MAX_SIZE = 100 * 1024 * 1024  //MAX_SIZE = MB * 1024KB/1MB * 1024BYTES/KB
+              totalSize = 0;
+              for(let i = 0; i < this.files.length;i++){
+                console.log(this.files.item(i).name)
+                totalSize += this.files.item(i).size
+                fileType = this.files.item(i).type.split("/")[0]
+                if (fileType !== 'audio' && fileType !== 'video' && fileType !== 'image') {
+                  console.error("FILE IS NOT A VIDEO OR AUDIO OR IMAGE")
+                  break
+                }
+              }
+              if (totalSize > MAX_SIZE){
+                console.error("SIZE LIMIT EXCEEDED")
+              }
           });
           </script>
 

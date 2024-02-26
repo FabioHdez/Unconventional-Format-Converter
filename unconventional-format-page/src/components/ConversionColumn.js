@@ -10,7 +10,19 @@ import {
   Tbody,
 } from "@chakra-ui/react";
 
-export const ConversionColumn = () => {
+export const ConversionColumn = ({files}) => {
+  const formatFileSize = (size) => {
+    if (size < 1024) return size + ' bytes';
+    let sizeInKB = size / 1024;
+    if (sizeInKB < 1024) return sizeInKB.toFixed(2) + ' KB';
+    let sizeInMB = sizeInKB / 1024;
+    return sizeInMB.toFixed(2) + ' MB';
+  };
+
+  // Function to extract file extension
+  const getFileExtension = (fileName) => {
+    return fileName.slice(((fileName.lastIndexOf(".") - 1) >>> 0) + 2);
+  };
   return (
     <TableContainer maxW={"lg"}>
       <Table variant="striped" size={{ base: "sm", md: "md" }}>
@@ -23,31 +35,13 @@ export const ConversionColumn = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>Toto - Africa (Official HD Video)</Td>
-            <Td>.mp4</Td>
-            <Td>5 MB</Td>
-          </Tr>
-          <Tr>
-            <Td>The Verve - Bitter Sweet Symphony</Td>
-            <Td>.mkv</Td>
-            <Td>9 MB</Td>
-          </Tr>
-          <Tr>
-            <Td>Radiohead - Creep</Td>
-            <Td>.avi</Td>
-            <Td>3 MB</Td>
-          </Tr>
-          <Tr>
-            <Td>Nirvana - Smells Like Teen Spirit</Td>
-            <Td>.mp4</Td>
-            <Td>6 MB</Td>
-          </Tr>
-          <Tr>
-            <Td>Earth, Wind & Fire - September</Td>
-            <Td>.flv</Td>
-            <Td>9 MB</Td>
-          </Tr>
+          {files && Array.from(files).map((file, index) => (
+            <Tr key={index}>
+              <Td maxW={{base:"200px",md:"280px"}} isTruncated>{file.name}</Td>
+              <Td>.{getFileExtension(file.name)}</Td>
+              <Td>{formatFileSize(file.size)}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

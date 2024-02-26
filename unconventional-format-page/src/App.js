@@ -19,6 +19,7 @@ function App() {
       // More than 5 files -> ERR
       if (files.length > 5) {
         console.error("TOO MANY FILES");
+        setFiles(null)
         return
       }
       //MAX_SIZE = MB * 1024KB/1MB * 1024BYTES/KB
@@ -38,6 +39,7 @@ function App() {
           fileType !== "image"
         ) {
           console.error("FILE IS NOT A VIDEO OR AUDIO OR IMAGE");
+          setFiles(null)
           return
         }
         fd.append(files[i].name, files[i]);
@@ -45,6 +47,7 @@ function App() {
       // More than MAX_SIZE -> ERR
       if (totalSize > MAX_SIZE) {
         console.error("SIZE LIMIT EXCEEDED");
+        setFiles(null)
         return
       }
       // SEND TO FLASK SERVER INSTEAD
@@ -73,7 +76,7 @@ function App() {
         <Center>
       <Box>
           <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>Input</Text>
-          <ConversionColumn />
+          <ConversionColumn files={files} />
           <Input type="file" hidden id="fileInput" onChange={(e) => {setFiles(e.target.files)}} multiple/>
           <Button type="file" width={'full'} onClick={() => {document.getElementById("fileInput").click()}}>Import</Button>
         </Box>
@@ -81,7 +84,7 @@ function App() {
         <Center>
         <Box>
         <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>Output</Text>
-          <ConversionColumn />
+          <ConversionColumn files={files} />
           <Button width={'full'}>Convert</Button>
         </Box>
         </Center>

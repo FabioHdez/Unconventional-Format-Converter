@@ -1,5 +1,5 @@
 import "./App.css";
-import { Box, SimpleGrid, Container,Text,Button,Flex, Spacer, Divider, Center, Input, Select } from "@chakra-ui/react";
+import { Box, SimpleGrid, Container,Text,Button,Flex, Spacer, Divider, Center, Input, CircularProgress  } from "@chakra-ui/react";
 import { ConversionColumn } from "./components/ConversionColumn";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
@@ -49,6 +49,9 @@ function App() {
         setFiles(null)
         return
       }
+      setProgress(prevState => {
+        return { ...prevState, pc: 0}
+      })
     }
   }, [files]);
 
@@ -93,10 +96,15 @@ function App() {
         <Box>
         <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>Output</Text>
           <ConversionColumn files={files} />
-          <Button width={'full'} onClick={sendFilesHttp} isDisabled={files == null || files.length <= 0 || format == '' || format == null  ? true:false}>Convert</Button>
+          {/* ADD DOWNLOAD BUTTON LATER */}
+          <Button hidden={progress.pc == 100 ? false:true} width={'full'} onClick={()=>console.log("clicked")}>Download</Button>
+          <Button hidden={progress.pc != 100 ? false:true} width={'full'} onClick={sendFilesHttp} isDisabled={files == null || files.length <= 0 || format == '' || format == null  ? true:false}>Convert</Button>
         </Box>
         </Center>
       </SimpleGrid>
+      <Center hidden={progress.pc == 0 || progress.pc == 100 ? true:false}>
+        <CircularProgress value={progress.pc} />
+      </Center>
       <Spacer />
       <Footer />
     </Flex>

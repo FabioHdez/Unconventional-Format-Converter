@@ -51,19 +51,20 @@ function App() {
         return
       }
       // SEND TO FLASK SERVER INSTEAD
-      // axios.post('http://httpbin.org/post', fd, {
-      //   onUploadProgress: (progressEvent) => {
-      //     setProgress(prevState => {
-      //       return { ...prevState, pc: progressEvent.progress*100}
-      //     })
-      //   },headers: {
-      //     "Custom-Header": "value",
-      //   }
-      // }).then(res => {
-      //   console.log(res.data)
-      // }).catch(err =>{
-      //   console.log(err)
-      // })
+      axios.post('http://127.0.0.1:5000/files/', fd, {
+        onUploadProgress: (progressEvent) => {
+          setProgress(prevState => {
+            return { ...prevState, pc: progressEvent.progress*100}
+          })
+        },headers: {
+          "sessionID": "prueba",
+          "format": ".mp4"
+        }
+      }).then(res => {
+        console.log(res.data)
+      }).catch(err =>{
+        console.log(err)
+      })
     }
   }, [files]);
 
@@ -71,6 +72,7 @@ function App() {
     <Container maxW={'80%'}>
     <Flex direction="column" minH="100vh">
       <Navbar />
+      <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>{progress.pc}</Text>
       <Divider my={2} />
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Center>

@@ -23,4 +23,4 @@ def fileUpload():
             # Save into the folder with the session id
             save_path = os.path.join("./input/c96c6d5b", fileKey)
             file.save(save_path)
-    return "render_template"
+    return "file saved"

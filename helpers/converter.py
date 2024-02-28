@@ -8,29 +8,31 @@ application. It will handle audio, video and image formats.
 import os
 import subprocess
 
-def convert(id:str,input:list,format:str):
+def convert(id:str,format:str):
     """ Converts a list of inputs and stores them in the "session ID" directory to group 
         the files. The directory will be stored in the output parent directory.
 
     Args:
         id (str): The "session ID" 
-        input (list): All the files for conversion.
         format (str): Desired format.  
 
     Returns: 
         Void.
-        Generates a folder and stores the converted files.
+        Generates an output folder and stores the converted files.
     """
     try:
         os.mkdir(f"./output/{id}")
     except:
+        # If folder exists delete everything
         print("Folder already exists.")
-    for i in input:
-        name = i.split(".")[0]
-        # ffmpeg -y -i input.mov -v quiet af23s2/output.mp4
-        convertCommand = ['ffmpeg','-y','-i', f"./input/{id}/{i}",'-v','quiet', f"output/{id}/{name}{format}"]
-        subprocess.run(convertCommand)
+        for file in os.listdir(f"./output/{id}"):
+            file_path = os.path.join(f"./output/{id}", file)
+            os.remove(file_path)
 
-if __name__ == "__main__":
-    pass
-    # convert('c96c6d5b',['input.webm','input2.webm','input3.webm','input4.webm'],'.mp4')
+    for file in os.listdir(f"./input/{id}"):
+        name = file.split(".")[0]
+        # ffmpeg -y -i "./input/af23s2/input.mov" -v quiet "./output/af23s2/input.mov"
+        file_path = os.path.join(f"./input/{id}", file)
+        out_file_path = os.path.join(f"./output/{id}", f"{name}.{format}")
+        convertCommand = ['ffmpeg','-y','-i', file_path,'-v','quiet', out_file_path]
+        subprocess.run(convertCommand,check=True)

@@ -2,6 +2,7 @@ from flask import Flask,render_template,request,make_response
 from flask_cors import CORS
 import os
 import uuid
+from helpers.converter import convert
 
 app = Flask(__name__)
 CORS(app)
@@ -28,6 +29,7 @@ def fileUpload():
             save_path = os.path.join(f"./input/{session_id}", fileKey)
             file.save(save_path)
             # TODO CONVERT, SEND FILES, DELETE FOLDERS
+            convert(session_id,request.headers["format"])
     response = make_response("response")
     return response
 

@@ -3,3 +3,4 @@ ffmpeg.exe
 __pycache__
 layout.png
 input/*
+output/*

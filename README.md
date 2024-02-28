@@ -1,35 +1,35 @@
 # Unconventional Format Converter
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [screenshots](#screenshots)
 
-## Description
-This will be a web application that will accept a multimedia file and let you convert the format to any other format.
+
+## General Info
+The purpose of this software is to provide users with a web tool to easily convert any multimedia file into another format. It uses an intuitive design and provides the user with the most common formats available.
 
 ## Technologies
-| Component | Technology |
-|:--------- |:---------- |
-| Backend   | Flask      |
-| Database  | MySQL      |
-| Frontend  | React      |
-| Library   | ffmpeg     |
+Project is created with:
+* NodeJS
+* ReactJS
+* ChakraUI
+* Flask
+* FFMPEG
 
-## Milestones
-- [ ] Create Python program that lets you convert multimedia files.
-- [ ] Create Frontend using react. 
-- [ ] Create Backend using flask.
+## Setup
+* First set up FFMPEG or download <a href="https://www.ffmpeg.org/download.html" target="_blank">ffmpeg.exe</a> and paste on the root of the application.
+* Install all dependecies for the Flask server: `pip install -r requirements.txt`
+* Start the flask server: `flask --app main run`
+* Install all dependecies for the React app: `cd unconventional-format-page` + `npm install`
+* Start the React app: `npm start`
 
-## User Goals
-* Users can convert multiple files at a time.
-    * Users can choose a folder or select multiple files at a time. 
-    * Drag into browser.
+## Screenshots
+### Sample Conversion
+![Sample conversion](https://github.com/FabioHdez/Unconventional-Format-Converter/blob/main/screenshots/mp3conversion.png)
+Here we can see how on the left we have the files uploaded by the user. On the right we have the files after upload and conversion.
+### All Formats
+![All formats](https://github.com/FabioHdez/Unconventional-Format-Converter/blob/main/screenshots/allformats.png)
+Demo of all the formats available
 
-* Users will then select the format that they want to convert into.
-    * They should have a dropdown to select multimedia type.
-    * Then another dropdown with all the options.
-    * Design in a way so that the more popular formats are more easily accessible.
-
-* After conversion user can then choose to download the file.
-    * If there is only one file then download it. 
-    * If multiple create a zip.
-
-* File will be deleted from the server after 5 or 10 minutes.
-    * Because the links will be publicly accessible to protect the user's data all conversions will be deleted after 5 or 10 minutes.
-    * Maybe add a link that will delete it.
+	

@@ -30,7 +30,7 @@ function App() {
         return
       }
       //MAX_SIZE = MB * 1024KB/1MB * 1024BYTES/KB
-      const MAX_SIZE = 100 * 1024 * 1024; 
+      const MAX_SIZE = 1000 * 1024 * 1024; 
       let totalSize = 0;
       
       // Loop through all the files:

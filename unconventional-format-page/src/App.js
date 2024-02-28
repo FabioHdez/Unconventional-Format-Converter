@@ -12,9 +12,13 @@ function App() {
   const [files, setFiles] = useState(null)
   const [format, setFormat] = useState(null)
   const [progress, setProgress] = useState({ started: false, pc:0})
+  const [ready, setReady] = useState(null)
+  const [session_id, setSession_id] = useState(null)
 
   useEffect(() => {
     if (files) {
+      setReady(null)
+      setSession_id(null)
       console.log(files);
       // More than 5 files -> ERR
       if (files.length > 5) {
@@ -53,9 +57,10 @@ function App() {
         return { ...prevState, pc: 0}
       })
     }
-  }, [files]);
+  }, [files,format]);
 
   function sendFilesHttp(){
+    setReady(false)
     const fd = new FormData();
 
     for(var i = 0; i < files.length; i++){
@@ -71,7 +76,12 @@ function App() {
         "format": format
       }
     }).then(res => {
-      console.log(res.data)
+      console.log(res)
+      if(res.status === 200){
+        // FIX LATER FOR JSON FILE
+        setSession_id(res.data)
+        setReady(true)
+      }
     }).catch(err =>{
       console.log(err)
     })
@@ -97,8 +107,10 @@ function App() {
         <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>Output</Text>
           <ConversionColumn files={files} />
           {/* ADD DOWNLOAD BUTTON LATER. DOWNLOAD BUTTON SHOULD SHOW ONLY AFTER RECEIVING HTTP CONFIRMATION */}
-          <Button hidden={progress.pc === 100 ? false:true} width={'full'} onClick={()=>console.log("clicked")}>Download</Button>
-          <Button hidden={progress.pc !== 100 ? false:true} width={'full'} onClick={sendFilesHttp} isDisabled={files === null || files.length <= 0 || format === '' || format === null  ? true:false}>Convert</Button>
+          {/* <Button hidden={progress.pc === 100 ? false:true} width={'full'} onClick={()=>console.log("clicked")}>Download</Button> */}
+          <Button isDisabled = {true} hidden={ready === null || ready === true?true:false} width={'full'}>Converting...</Button>
+          <Button hidden={!ready} width={'full'} onClick={()=>{window.location.href='http://localhost:5000/files/download/'+session_id}}>Download</Button>
+          <Button hidden={ready!=null} width={'full'} onClick={sendFilesHttp} isDisabled={files === null || files.length <= 0 || format === '' || format === null  ? true:false}>Convert</Button>
         </Box>
         </Center>
       </SimpleGrid>

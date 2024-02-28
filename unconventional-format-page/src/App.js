@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [files, setFiles] = useState(null)
+  const [outFiles, setOutFiles] = useState(null)
   const [format, setFormat] = useState(null)
   const [progress, setProgress] = useState({ started: false, pc:0})
   const [ready, setReady] = useState(null)
@@ -18,6 +19,8 @@ function App() {
   useEffect(() => {
     if (files) {
       setReady(null)
+      setOutFiles(null)
+      console.log("asdasd"+outFiles)
       setSession_id(null)
       console.log(files);
       // More than 5 files -> ERR
@@ -33,7 +36,6 @@ function App() {
       // Loop through all the files:
       // - adding to the total size for checking later
       // - checking if the files are multimedia files
-      // - 'packaging' the files for the HTTP post
       for (var i = 0; i < files.length; i++) {
         totalSize += files[i].size;
         let fileType = files[i].type.split("/")[0];
@@ -79,7 +81,8 @@ function App() {
       console.log(res)
       if(res.status === 200){
         // FIX LATER FOR JSON FILE
-        setSession_id(res.data)
+        setSession_id(res.data.session_id)
+        setOutFiles(res.data.files)
         setReady(true)
       }
     }).catch(err =>{
@@ -105,7 +108,7 @@ function App() {
         <Center>
         <Box>
         <Text textAlign={"center"} fontSize={"xl"} fontWeight={"bold"} mb={4}>Output</Text>
-          <ConversionColumn files={files} />
+          <ConversionColumn files={outFiles} len={files == null?0:files.length} />
           {/* ADD DOWNLOAD BUTTON LATER. DOWNLOAD BUTTON SHOULD SHOW ONLY AFTER RECEIVING HTTP CONFIRMATION */}
           {/* <Button hidden={progress.pc === 100 ? false:true} width={'full'} onClick={()=>console.log("clicked")}>Download</Button> */}
           <Button isDisabled = {true} hidden={ready === null || ready === true?true:false} width={'full'}>Converting...</Button>

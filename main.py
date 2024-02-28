@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,make_response,send_file
+from flask import Flask,render_template,request,make_response,send_file,jsonify
 from flask_cors import CORS
 import os
 import uuid
@@ -33,7 +33,23 @@ def fileUpload():
             file.save(save_path)
             # TODO CONVERT, SEND FILES, DELETE FOLDERS
             convert(session_id,request.headers["format"])
-    response = make_response(session_id)
+    
+    dataResponse = {
+        "session_id": session_id,
+        'files': []
+    }
+    
+    for file in os.listdir(f"./output/{session_id}"):
+        file_path = os.path.join(f"./output/{session_id}", file)
+        size = os.stat(file_path).st_size
+        fileInfo = {
+            "name": file,
+            "size": size
+        }
+        dataResponse["files"].append(fileInfo)
+
+    print(dataResponse)
+    response = make_response(dataResponse)
     return response
 
 @app.route("/files/download/<session_id>", methods = ['GET'])
@@ -41,6 +57,7 @@ def fileDownload(session_id):
     file_paths = []
     for file in os.listdir(f"./output/{session_id}"):
         file_path = os.path.join(f"./output/{session_id}", file)
+        print(os.stat(file_path).st_size)
         file_paths.append(file_path)
     
     memory_file = io.BytesIO()

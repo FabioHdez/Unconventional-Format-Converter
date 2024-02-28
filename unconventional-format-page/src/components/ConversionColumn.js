@@ -10,7 +10,7 @@ import {
   Tbody,
 } from "@chakra-ui/react";
 
-export const ConversionColumn = ({files}) => {
+export const ConversionColumn = ({files,len}) => {
   const formatFileSize = (size) => {
     if (size < 1024) return size + ' bytes';
     let sizeInKB = size / 1024;
@@ -26,7 +26,9 @@ export const ConversionColumn = ({files}) => {
   return (
     <TableContainer maxW={"lg"}>
       <Table variant="striped" size={{ base: "sm", md: "md" }}>
-        <TableCaption>Imported files will be converted into the selected format</TableCaption>
+        <TableCaption>
+          Imported files will be converted into the selected format
+        </TableCaption>
         <Thead>
           <Tr>
             <Th>File Name</Th>
@@ -35,13 +37,26 @@ export const ConversionColumn = ({files}) => {
           </Tr>
         </Thead>
         <Tbody>
-          {files && Array.from(files).map((file, index) => (
-            <Tr key={index}>
-              <Td maxW={{base:"200px",md:"280px"}} isTruncated>{file.name}</Td>
-              <Td>.{getFileExtension(file.name)}</Td>
-              <Td>{formatFileSize(file.size)}</Td>
-            </Tr>
-          ))}
+          {files === null
+            ? Array.from({ length: len }).map((_, index) => (
+                <Tr key={index}>
+                  <Td maxW={{ base: "200px", md: "280px" }} isTruncated>
+                  &#8203;
+                  </Td>
+                  <Td></Td>
+                  <Td></Td>
+                </Tr>
+              ))
+            : files &&
+              Array.from(files).map((file, index) => (
+                <Tr key={index}>
+                  <Td maxW={{ base: "200px", md: "280px" }} isTruncated>
+                    {file.name}
+                  </Td>
+                  <Td>.{getFileExtension(file.name)}</Td>
+                  <Td>{formatFileSize(file.size)}</Td>
+                </Tr>
+              ))}
         </Tbody>
       </Table>
     </TableContainer>

@@ -1,6 +1,7 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,make_response
 from flask_cors import CORS
 import os
+import uuid
 
 app = Flask(__name__)
 CORS(app)
@@ -10,17 +11,23 @@ def homepage():
 
 @app.route("/files/", methods = ['POST','GET'])
 def fileUpload():
+    session_id = uuid.uuid4().hex
     if(request.method == "POST"):
-        print(request.headers)
+        try:
+            os.mkdir(f"./input/{session_id}")
+        except:
+            # If for some reason the folder exists delete everything
+            print("Folder already exists.")
+            for file in os.listdir(f"./input/{session_id}"):
+                file_path = os.path.join(f"./input/{session_id}", file)
+                os.remove(file_path)
+
         for fileKey in request.files:
             file = request.files[fileKey]
-            try:
-                # FIX LATER
-                # Create a folder with the session ID 
-                os.mkdir(f"./input/c96c6d5b")
-            except:
-                print("Folder already exists.")
             # Save into the folder with the session id
-            save_path = os.path.join("./input/c96c6d5b", fileKey)
+            save_path = os.path.join(f"./input/{session_id}", fileKey)
             file.save(save_path)
-    return "file saved"
+            # TODO CONVERT, SEND FILES, DELETE FOLDERS
+    response = make_response("response")
+    return response
+
